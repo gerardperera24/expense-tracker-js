@@ -6,7 +6,7 @@ const port = process.env.PORT || 4000;
 app.use(express.json());
 
 //Routes
-const userRoutes = require('./routes/user');
+const userRoutes = require('./src/routes/user');
 app.use('/api/users', userRoutes);
 
 app.get('/', (req, res) => res.send('Expense Tracker API Running!'));

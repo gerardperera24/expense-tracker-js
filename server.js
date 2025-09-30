@@ -9,6 +9,10 @@ app.use(express.json());
 const userRoutes = require('./src/routes/user');
 app.use('/api/users', userRoutes);
 
+const expenseRoutes = require('./src/routes/expense');
+app.use('/api/expenses', expenseRoutes);
+
+
 app.get('/', (req, res) => res.send('Expense Tracker API Running!'));
 
 //Starting the server

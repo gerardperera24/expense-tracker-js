@@ -1,11 +1,11 @@
 const express = require('express');
 const router = express.Router();
 const expenseController = require('../controllers/expenseController');
-const e = require('cors');
+const authMiddleware = require('../middleware/authMiddleware');
 
-router.post('/', expenseController.createExpense);
-router.get('/', expenseController.getUserExpenses);
-router.put('/:id', expenseController.updateExpense);
-router.delete('/:id', expenseController.deleteExpense)
+router.post('/', authMiddleware, expenseController.createExpense);
+router.get('/', authMiddleware, expenseController.getUserExpenses);
+router.put('/:id', authMiddleware, expenseController.updateExpense);
+router.delete('/:id', authMiddleware, expenseController.deleteExpense)
 
 module.exports = router;

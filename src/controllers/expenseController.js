@@ -7,7 +7,7 @@ exports.createExpense = async (req, res) => {
   try {
     //Process of creating a new user in the database
     const expense = await prisma.expense.create({
-      data: { description, amount: parseFloat(amount), category: category || null, date: date ? new Date(date) : new Date(), userId }
+      data: { description, amount: parseFloat(amount), category: category || null, date: date ? new Date(date) : new Date(), userId: req.user.id }
     });
     res.status(201).json(expense);
   } catch (error) {
@@ -35,10 +35,14 @@ exports.updateExpense = async (req, res) => {
 
   try {
     const expense = await prisma.expense.update({
-      where: { id: parseInt(id) },
+      where: { id: parseInt(id), userId: req.user.id },
       data: { description, amount: amount ? parseFloat(amount) : undefined, category, date: date ? new Date(date) : undefined, category, date: date ? new Date(date) : undefined }
     });
-    res.json(expense);
+
+    if (expense.count === 0) {
+      return res.status(404).json({ error: 'Expense not found or unauthorized' });
+    }
+    res.json({ message: 'Expense updated successfully' });
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
@@ -49,7 +53,14 @@ exports.deleteExpense = async (req, res) => {
   const { id } = req.params;
 
   try {
-    await prisma.expense.delete({ where: { id: parseInt(id) } });
+    const expense = await prisma.expense.deleteMany({
+      where: { id: parseInt(id), userId: req.user.id }
+    });
+
+    if (expense.count === 0) {
+      return res.status(404).json({ error: 'Expense not found or unauthorized' });
+    }
+
     res.json({ message: 'Expense deleted successfully' });
   } catch (error) {
     res.status(400).json({ error: error.message });

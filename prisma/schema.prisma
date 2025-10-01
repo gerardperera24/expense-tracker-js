@@ -29,4 +29,3 @@ model Expense {
                     updatedAt   DateTime @updatedAt
 }
 
-}

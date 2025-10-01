@@ -2,7 +2,7 @@ import react, { useState } from 'react';
 import api from '../api';
 import { useNavigate } from 'react-router-dom';
 
-function register() {
+function Register() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [displayName, setDisplayName] = useState('');
@@ -58,3 +58,5 @@ function register() {
     </div>
   );
 }
+
+export default Register;
